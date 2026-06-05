@@ -1,26 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ehliyet Cebe - Hesap Silme</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#0b2a73;
+    color:white;
+    margin:0;
+    padding:40px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:#12398f;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 0 25px rgba(0,0,0,.3);
+}
+
+h1{
+    color:#FFD54F;
+}
+
+.card{
+    background:#0f2f79;
+    padding:20px;
+    border-radius:15px;
+    margin-top:20px;
+}
+
+.email{
+    color:#4FC3F7;
+    font-weight:bold;
+}
+
+ul{
+    line-height:1.8;
+}
+
+.footer{
+    margin-top:30px;
+    color:#ccc;
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
 <h1>Ehliyet Cebe Hesap Silme Talebi</h1>
 
 <p>
-Hesabınızı ve tüm verilerinizi silmek için
-puutvdestek@gmail.com adresine e-posta gönderin.
+Hesabınızı ve tüm verilerinizi silmek için aşağıdaki e-posta adresine
+talep gönderebilirsiniz.
 </p>
 
-<p>
-Mail başlığı:
+<div class="card">
+📧 E-posta:
+<br><br>
+<span class="email">puutvdestek@gmail.com</span>
+</div>
+
+<div class="card">
+<b>Mail Başlığı:</b>
+<br>
 "Hesap Silme Talebi"
-</p>
+</div>
 
-<p>
-Aşağıdaki bilgiler eklenmelidir:
-</p>
+<div class="card">
+<b>Mail içerisine eklenmesi gereken bilgiler:</b>
 
 <ul>
 <li>E-posta adresi</li>
 <li>Kullanıcı adı</li>
 <li>UID (varsa)</li>
 </ul>
+</div>
 
-<p>
-Talep onaylandıktan sonra tüm kullanıcı verileri
-Firestore ve Firebase Authentication sistemlerinden silinir.
-</p>
+<div class="card">
+Talep onaylandıktan sonra kullanıcı verileri
+Firebase Authentication ve Firestore sistemlerinden silinir.
+</div>
+
+<div class="footer">
+© 2026 Ehliyet Cebe
+</div>
+
+</div>
+
+</body>
+</html>
