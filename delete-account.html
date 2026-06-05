@@ -4,96 +4,384 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ehliyet Cebe - Hesap Silme</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-body{
-    font-family: Arial, sans-serif;
-    background:#0b2a73;
-    color:white;
-    margin:0;
-    padding:40px;
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.container{
-    max-width:800px;
-    margin:auto;
-    background:#12398f;
-    border-radius:20px;
-    padding:30px;
-    box-shadow:0 0 25px rgba(0,0,0,.3);
-}
+  :root {
+    --navy: #0b2a73;
+    --blue: #1a3fa8;
+    --mid: #12398f;
+    --accent: #FFD54F;
+    --sky: #4FC3F7;
+    --red: #ef5350;
+    --card-bg: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.12);
+  }
 
-h1{
-    color:#FFD54F;
-}
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--navy);
+    color: #e8eef8;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    position: relative;
+    overflow-x: hidden;
+  }
 
-.card{
-    background:#0f2f79;
-    padding:20px;
-    border-radius:15px;
-    margin-top:20px;
-}
+  /* Arka plan efekti */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(79,195,247,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(255,213,79,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
 
-.email{
-    color:#4FC3F7;
-    font-weight:bold;
-}
+  .wrapper {
+    width: 100%;
+    max-width: 560px;
+    position: relative;
+    z-index: 1;
+  }
 
-ul{
-    line-height:1.8;
-}
+  /* Logo / Başlık alanı */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    animation: fadeDown 0.6s ease both;
+  }
 
-.footer{
-    margin-top:30px;
-    color:#ccc;
-    font-size:14px;
-}
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,213,79,0.12);
+    border: 1px solid rgba(255,213,79,0.3);
+    border-radius: 50px;
+    padding: 8px 18px;
+    margin-bottom: 16px;
+  }
+
+  .logo-badge .dot {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .logo-badge span {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(22px, 5vw, 28px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  /* Ana kart */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    backdrop-filter: blur(8px);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .card + .card { margin-top: 14px; animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.2s; }
+  .card:nth-child(4) { animation-delay: 0.3s; }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sky);
+    margin-bottom: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .intro-text {
+    font-size: 15px;
+    color: #c8d6f0;
+    line-height: 1.7;
+  }
+
+  /* E-posta kutusu */
+  .email-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: rgba(79,195,247,0.08);
+    border: 1px solid rgba(79,195,247,0.25);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-top: 4px;
+  }
+
+  .email-box .addr {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--sky);
+    word-break: break-all;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    background: rgba(79,195,247,0.15);
+    border: 1px solid rgba(79,195,247,0.3);
+    color: var(--sky);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .copy-btn:hover { background: rgba(79,195,247,0.28); transform: translateY(-1px); }
+  .copy-btn:active { transform: scale(0.96); }
+  .copy-btn.copied { background: rgba(76,175,80,0.2); border-color: rgba(76,175,80,0.4); color: #81c784; }
+
+  /* Konu satırı */
+  .subject-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.01em;
+  }
+
+  /* Bilgi listesi */
+  .info-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .info-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #c8d6f0;
+  }
+
+  .info-list li .bullet {
+    width: 28px; height: 28px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: rgba(255,213,79,0.1);
+    border: 1px solid rgba(255,213,79,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+
+  /* Uyarı kartı */
+  .warning-card {
+    background: rgba(239,83,80,0.08);
+    border: 1px solid rgba(239,83,80,0.25);
+    border-radius: 20px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-top: 14px;
+    animation: fadeUp 0.6s 0.35s ease both;
+  }
+
+  .warning-card .icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+
+  .warning-card p {
+    font-size: 13px;
+    color: #ffb3b0;
+    line-height: 1.6;
+  }
+
+  .warning-card strong { color: #ef9a9a; }
+
+  /* Adımlar kartı */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 30px; height: 30px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 2px solid var(--sky);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--sky);
+  }
+
+  .step-text { font-size: 14px; color: #c8d6f0; line-height: 1.6; padding-top: 4px; }
+  .step-text strong { color: #fff; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  /* Animasyonlar */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.85); }
+  }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="wrapper">
 
-<h1>Ehliyet Cebe Hesap Silme Talebi</h1>
+  <div class="header">
+    <div class="logo-badge">
+      <span class="dot"></span>
+      <span>Ehliyet Cebe</span>
+    </div>
+    <h1>Hesap <em>Silme</em> Talebi</h1>
+  </div>
 
-<p>
-Hesabınızı ve tüm verilerinizi silmek için aşağıdaki e-posta adresine
-talep gönderebilirsiniz.
-</p>
+  <!-- Açıklama -->
+  <div class="card">
+    <div class="section-label">Hakkında</div>
+    <p class="intro-text">
+      Hesabınızı ve tüm kişisel verilerinizi kalıcı olarak silmek için
+      aşağıdaki adımları izleyerek bizimle iletişime geçebilirsiniz.
+    </p>
+  </div>
 
-<div class="card">
-📧 E-posta:
-<br><br>
-<span class="email">puutvdestek@gmail.com</span>
+  <!-- E-posta -->
+  <div class="card">
+    <div class="section-label">İletişim Adresi</div>
+    <div class="email-box">
+      <span class="addr">puutvdestek@gmail.com</span>
+      <button class="copy-btn" onclick="copyEmail(this)">Kopyala</button>
+    </div>
+  </div>
+
+  <!-- Konu -->
+  <div class="card">
+    <div class="section-label">Mail Konusu</div>
+    <div class="subject-box">✉️ &nbsp;"Hesap Silme Talebi"</div>
+  </div>
+
+  <!-- Bilgiler -->
+  <div class="card">
+    <div class="section-label">Gerekli Bilgiler</div>
+    <ul class="info-list">
+      <li><span class="bullet">📧</span> E-posta adresiniz</li>
+      <li><span class="bullet">👤</span> Kullanıcı adınız</li>
+      <li><span class="bullet">🔑</span> UID (varsa)</li>
+    </ul>
+  </div>
+
+  <!-- Adımlar -->
+  <div class="card">
+    <div class="section-label">Süreç</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Yukarıdaki e-posta adresine <strong>"Hesap Silme Talebi"</strong> konusuyla mail gönderin.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Ekibimiz talebinizi <strong>en geç 7 iş günü</strong> içinde değerlendirir.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Onay sonrası verileriniz <strong>Firebase Authentication</strong> ve <strong>Firestore</strong> üzerinden kalıcı olarak silinir.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Uyarı -->
+  <div class="warning-card">
+    <span class="icon">⚠️</span>
+    <p><strong>Dikkat:</strong> Hesap silme işlemi geri alınamaz. Tüm ilerlemeniz, sınav geçmişiniz ve kişisel verileriniz kalıcı olarak silinecektir.</p>
+  </div>
+
+  <footer>© 2026 Ehliyet Cebe &nbsp;·&nbsp; Tüm hakları saklıdır.</footer>
 </div>
 
-<div class="card">
-<b>Mail Başlığı:</b>
-<br>
-"Hesap Silme Talebi"
-</div>
-
-<div class="card">
-<b>Mail içerisine eklenmesi gereken bilgiler:</b>
-
-<ul>
-<li>E-posta adresi</li>
-<li>Kullanıcı adı</li>
-<li>UID (varsa)</li>
-</ul>
-</div>
-
-<div class="card">
-Talep onaylandıktan sonra kullanıcı verileri
-Firebase Authentication ve Firestore sistemlerinden silinir.
-</div>
-
-<div class="footer">
-© 2026 Ehliyet Cebe
-</div>
-
-</div>
+<script>
+  function copyEmail(btn) {
+    navigator.clipboard.writeText('puutvdestek@gmail.com').then(() => {
+      btn.textContent = '✓ Kopyalandı';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Kopyala';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      // Fallback
+      const el = document.createElement('textarea');
+      el.value = 'puutvdestek@gmail.com';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      btn.textContent = '✓ Kopyalandı';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Kopyala';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
 
 </body>
 </html>
